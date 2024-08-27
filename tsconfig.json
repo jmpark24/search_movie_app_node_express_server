@@ -1,0 +1,18 @@
+{
+  "ts-node": { "esm": true },
+  "compilerOptions": {
+    "target": "es2016",
+    "module": "ESNext",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "strict": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "preserveValueImports": false
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}
