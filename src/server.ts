@@ -2,6 +2,7 @@ import 'dotenv/config';
 import express, { Express, Request, Response } from 'express';
 import cors from 'cors';
 import fetch from 'node-fetch';
+import localhost from './getServerIp.js';
 
 const app: Express = express();
 const PORT = 8080;
@@ -17,7 +18,7 @@ if (!YOUR_API_KEY) {
 }
 
 app.listen(PORT, () => {
-  console.log(`[server]: Server is running at http://localhost:${PORT}`);
+  console.log(`[server]: Server is running at http://${localhost()}:${PORT}`);
 });
 
 app.post('/api/movie', async (req: Request, res: Response) => {
@@ -37,7 +38,7 @@ app.post('/api/movie', async (req: Request, res: Response) => {
         `https://www.omdbapi.com/?i=${encodeURIComponent(id)}&apikey=${YOUR_API_KEY}`
       );
     } else {
-      return res.status(400).json({ Error: 'Invalid request' });
+      return res.status(400).json({ Error: '잘못된 요청' });
     }
 
     data = await response.json();
@@ -47,6 +48,6 @@ app.post('/api/movie', async (req: Request, res: Response) => {
     }
   } catch (error) {
     console.error('Error:', error);
-    res.status(500).json({ Error: 'An error occurred while processing data' });
+    res.status(500).json({ Error: '데이터를 처리하는 동안 오류가 발생했습니다.' });
   }
 });
