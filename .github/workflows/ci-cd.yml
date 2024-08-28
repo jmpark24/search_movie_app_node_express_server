@@ -3,7 +3,7 @@ name: CI/CD to AWS Elastic Beanstalk
 on:
   push:
     branches:
-      - main # main 브랜치에 push 이벤트가 발생하면 실행
+      - main
 
 jobs:
   deploy:
@@ -41,4 +41,10 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           OMDB_API_KEY: ${{ secrets.OMDB_API_KEY }}
-        run: eb deploy
+        run: eb deploy --debug
+
+      - name: Debug Info
+        run: |
+          echo "AWS_REGION is $AWS_REGION"
+          echo "EB_APP_NAME is ${{ secrets.EB_APP_NAME }}"
+          echo "EB_ENV_NAME is ${{ secrets.EB_ENV_NAME }}"
