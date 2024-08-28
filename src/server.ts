@@ -1,11 +1,23 @@
 import 'dotenv/config';
-import express, { Express, Request, Response } from 'express';
+import express from 'express';
 import cors from 'cors';
 import fetch from 'node-fetch';
-import localhost from './getServerIp.js';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+import swaggerUi from 'swagger-ui-express';
+import YAML from 'yamljs';
+import localhost from './utils/getServerIp.js';
 
-const app: Express = express();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const app = express();
 const PORT = 8080;
+
+// Swagger 문서 로드
+const swaggerDocument = YAML.load(join(__dirname, '../swagger.yaml'));
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(cors());
 app.use(express.json());
@@ -13,7 +25,7 @@ app.use(express.json());
 const YOUR_API_KEY = process.env.OMDB_API_KEY;
 
 if (!YOUR_API_KEY) {
-  console.error('API keys, project ID, or credentials file path are not defined');
+  console.error('OMDb API Key is not defined');
   process.exit(1);
 }
 
@@ -21,7 +33,7 @@ app.listen(PORT, () => {
   console.log(`[server]: Server is running at http://${localhost()}:${PORT}`);
 });
 
-app.post('/api/movie', async (req: Request, res: Response) => {
+app.post('/api/movie', async (req, res) => {
   const { title, page, id } = req.body;
   console.log(req.body);
 
@@ -45,6 +57,8 @@ app.post('/api/movie', async (req: Request, res: Response) => {
 
     if (data.Response === 'True') {
       res.json(data);
+    } else {
+      res.status(404).json({ Error: '영화가 검색되지 않았습니다.' });
     }
   } catch (error) {
     console.error('Error:', error);

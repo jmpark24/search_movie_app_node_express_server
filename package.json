@@ -1,5 +1,5 @@
 {
-  "name": "server",
+  "name": "search_movie_app_node_express_server",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
@@ -12,12 +12,16 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "ip": "^2.0.1",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^3.3.2",
+    "swagger-ui-express": "^5.0.1",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/node": "^22.5.0",
+    "@types/swagger-ui-express": "^4.1.6",
+    "@types/yamljs": "^0.2.34",
     "nodemon": "^3.1.4",
     "typescript": "^5.5.4"
   }

@@ -11,8 +11,12 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "preserveValueImports": false
+    "preserveValueImports": false,
+    "baseUrl": "./src",
+    "paths": {
+      "*": ["types/*"]
+    }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "src/types/**/*"],
   "exclude": ["node_modules"]
 }
