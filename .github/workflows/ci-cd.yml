@@ -45,3 +45,8 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           OMDB_API_KEY: ${{ secrets.OMDB_API_KEY }}
         run: eb deploy
+      - name: Debug Info
+        run: |
+          echo "AWS_REGION is $AWS_REGION"
+          echo "EB_APP_NAME is ${{ secrets.EB_APP_NAME }}"
+          echo "EB_ENV_NAME is ${{ secrets.EB_ENV_NAME }}"
