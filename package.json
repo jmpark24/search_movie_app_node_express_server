@@ -1,11 +1,12 @@
 {
   "name": "search_movie_app_node_express_server",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/server.js",
   "type": "module",
   "scripts": {
-    "build": "tsc -w",
-    "start": "nodemon dist/server.js"
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "nodemon dist/server.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: 영화 검색 API
-  description: OMDb API를 사용하여 영화를 검색하는 API
+  description: OMDb API를 사용하여 영화를 검색하거나 세부정보를 가져오는 API
   version: 1.0.0
 servers:
   - url: http://localhost:8080
@@ -9,7 +9,7 @@ paths:
   /api/movie:
     post:
       summary: 영화 검색 또는 영화 세부정보 가져오기
-      description: 제목과 페이지, 또는 ID를 기반으로 OMDb API에서 영화 데이터를 가져옵니다.
+      description: 제목과 페이지를 사용하여 영화 검색하거나, ID를 사용하여 특정 영화의 세부정보를 가져옵니다. 요청에 따라 OMDb API에서 데이터를 조회합니다.
       requestBody:
         required: true
         content:
@@ -37,12 +37,12 @@ paths:
                     - id
             examples:
               TitleAndPage:
-                summary: 영화 검색 하기 ("title"은 영문으로 입력해야 검색이 가능합니다.)
+                summary: 영화 검색하기
                 value:
                   title: inception
                   page: 1
               IdOnly:
-                summary: 영화 상세 데이터 조회하기 ("id"는 영화 검색을 했을 때 응답받을 수 있는 값입니다.)
+                summary: 영화 상세 데이터 조회하기
                 value:
                   id: tt1375666
       responses:
@@ -56,7 +56,7 @@ paths:
                   - $ref: '#/components/schemas/MovieDetailsResponse'
               examples:
                 SearchExample:
-                  summary: 영화 검색 하기
+                  summary: 영화 검색 결과
                   value:
                     Response: 'True'
                     Search:
@@ -67,7 +67,7 @@ paths:
                         Poster: 'https://example.com/poster.jpg'
                     Error: ''
                 DetailExample:
-                  summary: 영화 상세 데이터 조회하기
+                  summary: 영화 상세 데이터 조회 결과
                   value:
                     Response: 'True'
                     Title: 'Inception'
@@ -82,6 +82,8 @@ paths:
                     Ratings:
                       - Source: 'Internet Movie Database'
                         Value: '8.8/10'
+                      - Source: 'Rotten Tomatoes'
+                        Value: '87%'
                     Actors: 'Leonardo DiCaprio, Joseph Gordon-Levitt, Ellen Page'
                     Director: 'Christopher Nolan'
                     Production: 'Warner Bros.'
