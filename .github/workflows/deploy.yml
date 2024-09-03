@@ -30,9 +30,10 @@ jobs:
       - name: Create deployment package
         run: |
           mkdir -p deploy
-          cp -r ./* deploy/
+          cp -r * deploy/
           cd deploy
           zip -r deploy.zip .
+          cd ..
 
       - name: Deploy to Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v20
