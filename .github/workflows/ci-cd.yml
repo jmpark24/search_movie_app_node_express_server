@@ -27,26 +27,23 @@ jobs:
           sudo apt-get install -y python3-pip
           pip3 install --upgrade awsebcli
 
-      - name: List Elastic Beanstalk environments
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-        run: eb list
-
       - name: Initialize Elastic Beanstalk environment
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
+          # Initialize Elastic Beanstalk CLI
           eb init -p node.js -r $AWS_REGION ${{ secrets.EB_APP_NAME }}
           eb use ${{ secrets.EB_ENV_NAME }}
+          # Verify environment setup
+          eb list
 
       - name: Deploy to Elastic Beanstalk
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
         run: eb deploy --debug
 
       - name: Debug Info
