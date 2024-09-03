@@ -30,7 +30,7 @@ jobs:
       - name: Create deployment package
         run: |
           mkdir -p deploy
-          cp -r * deploy/
+          find . -maxdepth 1 ! -name 'deploy' ! -name '.' -exec cp -r {} deploy/ \;
           cd deploy
           zip -r deploy.zip .
           cd ..
