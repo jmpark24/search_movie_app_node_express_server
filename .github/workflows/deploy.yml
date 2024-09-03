@@ -3,7 +3,7 @@ name: Node.js CI/CD
 on:
   push:
     branches:
-      - main # 또는 배포를 원하는 다른 브랜치
+      - main
   pull_request:
     branches:
       - main
@@ -19,13 +19,13 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20' # Node.js 버전
+          node-version: '20'
 
       - name: Install dependencies
         run: npm install
 
       - name: Build project
-        run: npm run build # TypeScript 컴파일 등의 빌드 명령
+        run: npm run build
 
       - name: Create deployment package
         run: |
@@ -40,9 +40,10 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: ${{ secrets.EB_APP_NAME }} # Elastic Beanstalk 애플리케이션 이름
-          environment_name: ${{ secrets.EB_ENV_NAME }} # Elastic Beanstalk 환경 이름
-          version_label: ${{ github.sha }} # 배포 버전 레이블
-          region: ${{ secrets.AWS_REGION }} # 예: ap-northeast-2
+          application_name: ${{ secrets.EB_APP_NAME }}
+          environment_name: ${{ secrets.EB_ENV_NAME }}
+          version_label: ${{ github.sha }} # 기존 레이블 사용
+          region: ${{ secrets.AWS_REGION }}
           deployment_package: deploy/deploy.zip
+          use_existing_version_if_available: true # 기존 버전이 있으면 재사용
           wait_for_environment_recovery: 60
