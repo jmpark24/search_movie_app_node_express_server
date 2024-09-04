@@ -33,11 +33,10 @@ app.listen(PORT, () => {
   console.log(`[server]: Server is running at http://${localhost()}:${PORT}`);
 });
 app.get('/health', async (req, res) => {
-  res.status(200);
+  res.status(200).json({ message: 'This is a successful response!' });
 });
 app.post('/api/movie', async (req, res) => {
   const { title, page, id } = req.body;
-  console.log('요청왔다');
   console.log(req.body);
 
   try {

@@ -34,11 +34,10 @@ app.listen(PORT, () => {
     console.log(`[server]: Server is running at http://${localhost()}:${PORT}`);
 });
 app.get('/health', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.status(200);
+    res.status(200).json({ message: 'This is a successful response!' });
 }));
 app.post('/api/movie', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { title, page, id } = req.body;
-    console.log('요청왔다');
     console.log(req.body);
     try {
         let response;
