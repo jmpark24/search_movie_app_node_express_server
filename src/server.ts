@@ -8,12 +8,20 @@ import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
 import localhost from './utils/getServerIp.js';
 import https from 'https';
+import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
-const PORT = 8080;
+
+const HTTPS_PORT = process.env.HTTPS_PORT || 80;
+// SSL 인증서 경로 (실제 서버의 인증서 파일 경로로 변경 필요)
+const sslOptions = {
+  key: fs.readFileSync(join(__dirname, '../certs/private.key')), // 개인 키 파일 경로
+  cert: fs.readFileSync(join(__dirname, '../certs/certificate.crt')), // 인증서 파일 경로
+  ca: fs.readFileSync(join(__dirname, '../certs/ca_bundle.crt')), // CA 인증서 파일 (선택 사항)
+};
 
 // Swagger 문서 로드
 const swaggerDocument = YAML.load(join(__dirname, '../swagger.yaml'));
@@ -30,9 +38,10 @@ if (!YOUR_API_KEY) {
   process.exit(1);
 }
 
-app.listen(PORT, () => {
-  console.log(`[server]: Server is running at http://${localhost()}:${PORT}`);
+https.createServer(sslOptions, app).listen(HTTPS_PORT, () => {
+  console.log(`[server]: Secure server is running at https://${localhost()}:${HTTPS_PORT}`);
 });
+
 app.get('/health', (req, res) => {
   res.status(200).json({
     status: 'UP',
