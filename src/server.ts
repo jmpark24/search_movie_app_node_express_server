@@ -7,7 +7,7 @@ import { dirname, join } from 'path';
 import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
 import localhost from './utils/getServerIp.js';
-import https from 'https'
+import https from 'https';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -33,8 +33,11 @@ if (!YOUR_API_KEY) {
 app.listen(PORT, () => {
   console.log(`[server]: Server is running at http://${localhost()}:${PORT}`);
 });
-app.get('/health', async (req, res) => {
-  res.status(200).json({ message: 'This is a successful response!' });
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'UP',
+    timestamp: new Date().toISOString(),
+  });
 });
 app.post('/api/movie', async (req, res) => {
   const { title, page, id } = req.body;
