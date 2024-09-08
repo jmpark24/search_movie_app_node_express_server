@@ -7,6 +7,7 @@ import { dirname, join } from 'path';
 import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
 import localhost from './utils/getServerIp.js';
+import https from 'https'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
