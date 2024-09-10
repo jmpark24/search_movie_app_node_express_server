@@ -6,20 +6,27 @@ import { dirname, join } from 'path';
 import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
 import localhost from './utils/getServerIp.js';
+import https from 'https'; // HTTPS 모듈 추가
+import fs from 'fs'; // 파일 시스템 모듈 추가
 import { MovieDetails, searchMoviesType } from './types/omdb';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
-
-const PORT = 8080;
+const PORT = 443; // HTTPS는 기본적으로 포트 443 사용
 const YOUR_API_KEY = process.env.OMDB_API_KEY || '96b42200';
 
 if (!YOUR_API_KEY) {
   console.error('OMDb API Key is not defined');
   process.exit(1);
 }
+
+// SSL 인증서와 키 파일 경로 (인증서 파일의 실제 경로로 변경)
+const sslOptions = {
+  key: fs.readFileSync('/etc/ssl/private/selfsigned.key'), // 키 파일 경로
+  cert: fs.readFileSync('/etc/ssl/certs/selfsigned.crt'), // 인증서 파일 경로
+};
 
 app.use(cors());
 app.use(express.json());
@@ -28,13 +35,7 @@ const swaggerDocument = YAML.load(join(__dirname, '../swagger.yaml'));
 
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.listen(PORT, () => {
-  console.log(`[server]: Server is running at http://${localhost()}:${PORT}`);
-});
 app.get('/', (req, res) => {
-  res.send(`.env 테스트 : ${process.env.DATABASE_NAME}`);
-});
-app.get('/health', (req: Request, res: Response) => {
   res.status(200).json({
     status: 'UP',
     timestamp: new Date().toISOString(),
@@ -82,4 +83,9 @@ app.get('/getMovieDetails', async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({ Error: '데이터를 처리하는 동안 오류가 발생했습니다.' });
   }
+});
+
+// HTTPS 서버 실행
+https.createServer(sslOptions, app).listen(PORT, () => {
+  console.log(`[server]: Secure server is running at https://${localhost()}:${PORT}`);
 });
