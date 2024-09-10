@@ -9,6 +9,8 @@ import localhost from './utils/getServerIp.js';
 import https from 'https'; // HTTPS 모듈 추가
 import fs from 'fs'; // 파일 시스템 모듈 추가
 import { MovieDetails, searchMoviesType } from './types/omdb';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
