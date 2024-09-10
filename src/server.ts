@@ -26,8 +26,8 @@ if (!YOUR_API_KEY) {
 
 // SSL 인증서와 키 파일 경로 (인증서 파일의 실제 경로로 변경)
 const sslOptions = {
-  key: fs.readFileSync('/etc/ssl/private/selfsigned.key'), // 키 파일 경로
-  cert: fs.readFileSync('/etc/ssl/certs/selfsigned.crt'), // 인증서 파일 경로
+  key: fs.readFileSync('/etc/ssl/private/mykey.key'), // 키 파일 경로
+  cert: fs.readFileSync('/etc/ssl/certs/mycert.crt'), // 인증서 파일 경로
 };
 
 app.use(cors());
