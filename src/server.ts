@@ -31,7 +31,9 @@ app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.listen(PORT, () => {
   console.log(`[server]: Server is running at http://${localhost()}:${PORT}`);
 });
-
+app.get('/', (req, res) => {
+  res.send(`.env 테스트 : ${process.env.DATABASE_NAME}`);
+});
 app.get('/health', (req: Request, res: Response) => {
   res.status(200).json({
     status: 'UP',
