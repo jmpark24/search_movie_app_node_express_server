@@ -20,8 +20,8 @@ import fs from 'fs'; // 파일 시스템 모듈 추가
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const app = express();
-const PORT = 443; // HTTPS는 기본적으로 포트 443 사용
-const YOUR_API_KEY = process.env.OMDB_API_KEY || '96b42200';
+const PORT = 8080; // HTTPS는 기본적으로 포트 443 사용
+const YOUR_API_KEY = process.env.OMDB_API_KEY;
 if (!YOUR_API_KEY) {
     console.error('OMDb API Key is not defined');
     process.exit(1);
