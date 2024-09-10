@@ -22,7 +22,7 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const app = express();
-const PORT = 443; // HTTPS는 기본적으로 포트 443 사용
+const PORT = 8080; // HTTPS는 기본적으로 포트 443 사용
 const YOUR_API_KEY = process.env.OMDB_API_KEY;
 if (!YOUR_API_KEY) {
     console.error('OMDb API Key is not defined');
@@ -30,8 +30,8 @@ if (!YOUR_API_KEY) {
 }
 // SSL 인증서와 키 파일 경로 (인증서 파일의 실제 경로로 변경)
 const sslOptions = {
-    key: fs.readFileSync('/etc/ssl/private/mykey.key'), // 키 파일 경로
-    cert: fs.readFileSync('/etc/ssl/certs/mycert.crt'), // 인증서 파일 경로
+    key: fs.readFileSync('/etc/ssl/private/mykey.key'),
+    cert: fs.readFileSync('/etc/ssl/certs/mycert.crt'),
 };
 app.use(cors());
 app.use(express.json());
