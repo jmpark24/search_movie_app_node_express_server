@@ -15,20 +15,19 @@ import { dirname, join } from 'path';
 import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
 import localhost from './utils/getServerIp.js';
-import https from 'https'; // HTTPS 모듈 추가
-import fs from 'fs'; // 파일 시스템 모듈 추가
+import https from 'https';
+import fs from 'fs';
 import dotenv from 'dotenv';
 dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const app = express();
-const PORT = 8080; // HTTPS는 기본적으로 포트 443 사용
+const PORT = process.env.PORT;
 const YOUR_API_KEY = process.env.OMDB_API_KEY;
 if (!YOUR_API_KEY) {
     console.error('OMDb API Key is not defined');
     process.exit(1);
 }
-// SSL 인증서와 키 파일 경로 (인증서 파일의 실제 경로로 변경)
 const sslOptions = {
     key: fs.readFileSync('/etc/ssl/private/mykey.key'),
     cert: fs.readFileSync('/etc/ssl/certs/mycert.crt'),
@@ -37,6 +36,9 @@ app.use(cors());
 app.use(express.json());
 const swaggerDocument = YAML.load(join(__dirname, '../swagger.yaml'));
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+https.createServer(sslOptions, app).listen(PORT, () => {
+    console.log(`[server]: Secure server is running at https://${localhost()}:${PORT}`);
+});
 app.get('/', (req, res) => {
     res.status(200).json({
         status: 'UP',
@@ -60,7 +62,6 @@ app.get('/searchMovies', (req, res) => __awaiter(void 0, void 0, void 0, functio
         res.status(500).json({ Error: '데이터를 처리하는 동안 오류가 발생했습니다.' });
     }
 }));
-// 영화 상세 정보 API
 app.get('/getMovieDetails', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.query.id;
     if (!id) {
@@ -80,7 +81,3 @@ app.get('/getMovieDetails', (req, res) => __awaiter(void 0, void 0, void 0, func
         res.status(500).json({ Error: '데이터를 처리하는 동안 오류가 발생했습니다.' });
     }
 }));
-// HTTPS 서버 실행
-https.createServer(sslOptions, app).listen(PORT, () => {
-    console.log(`[server]: Secure server is running at https://${localhost()}:${PORT}`);
-});
